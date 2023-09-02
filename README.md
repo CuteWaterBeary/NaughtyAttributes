@@ -1,48 +1,37 @@
 # NaughtyAttributes
-[![Unity 2019.4+](https://img.shields.io/badge/unity-2019.4%2B-blue.svg)](https://unity3d.com/get-unity/download)
-[![openupm](https://img.shields.io/npm/v/com.dbrizov.naughtyattributes?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.dbrizov.naughtyattributes/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/dbrizov/NaughtyAttributes/blob/master/LICENSE)
 
-NaughtyAttributes is an extension for the Unity Inspector.
-
-It expands the range of attributes that Unity provides so that you can create powerful inspectors without the need of custom editors or property drawers. It also provides attributes that can be applied to non-serialized fields or functions.
+NaughtyAttributes expands the range of attributes that the Unity Inspector provides so that you can create powerful inspectors without the need of custom editors or property drawers. It also provides attributes that can be applied to non-serialized fields or functions.
 
 Most of the attributes are implemented using Unity's `CustomPropertyDrawer`, so they will work in your custom editors.
 The attributes that won't work in your custom editors are the meta attributes and some drawer attributes such as
-`ReorderableList`, `Button`, `ShowNonSerializedField` and `ShowNativeProperty`.    
+`ReorderableList`, `Button`, `ShowNonSerializedField` and `ShowNativeProperty`.
 If you want all of the attributes to work in your custom editors, however, you must inherit from `NaughtyInspector` and use the `NaughtyEditorGUI.PropertyField_Layout` function instead of `EditorGUILayout.PropertyField`.
 
 ## System Requirements
 Unity **2019.4** or later versions. Don't forget to include the NaughtyAttributes namespace.
 
 ## Installation
-1. The package is available on the [openupm registry](https://openupm.com). You can install it via [openupm-cli](https://github.com/openupm/openupm-cli).
+1. Clone this repo directly into your Packages folder.
+
+2. The package is available on the [openupm registry](https://openupm.com). You can install it via [openupm-cli](https://github.com/openupm/openupm-cli).
 ```
 openupm add com.dbrizov.naughtyattributes
 ```
-2. You can also install via git url by adding this entry in your **manifest.json**
+3. You can also install via git url by adding this entry in your **manifest.json**
 ```
 "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm"
 ```
-3. You can also download it from the [Asset Store](https://assetstore.unity.com/packages/tools/utilities/naughtyattributes-129996)
+4. You can also download it from the [Asset Store](https://assetstore.unity.com/packages/tools/utilities/naughtyattributes-129996)
 
-## Documentation
-- [Documentation](https://dbrizov.github.io/na-docs/)
-- [Documentation Repo](https://github.com/dbrizov/na-docs)
-
-## Support
-NaughtyAttributes is an open-source project that I am developing in my free time. If you like it you can support me by donating.
-
-- [PayPal](https://paypal.me/dbrizov)
-- [Buy Me A Coffee](https://www.buymeacoffee.com/dbrizov)
 
 # Overview
+
+Some more docs that should be merged into this readme: https://dbrizov.github.io/na-docs/attributes/drawer_attributes/index.html
 
 ## Special Attributes
 
 ### AllowNesting
 This attribute must be used in some cases when you want meta attributes to work inside serializable nested structs or classes.
-You can check in which cases you need to use it [here](https://dbrizov.github.io/na-docs/attributes/special_attributes/allow_nesting.html).
 
 ```csharp
 public class NaughtyComponent : MonoBehaviour
@@ -60,6 +49,15 @@ public struct MyStruct
     public int integer;
 }
 ```
+
+>Note
+>>    The ``AllowNesting`` attribute is actually a drawer attribute. You can think of it as a ``DefaultDrawer`` attribute.
+    All it does is draw the serialized field with its default drawer. This is a bit of a hack you see.
+    The system is implemented in such a way that before a drawer's ``OnGUI`` function is called it applies the **meta** and **validator** attributes.
+    In order to trigger this behavoir we need some kind of a drawer. The ``AllowNesting`` is that drawer.
+    If for you are combining :ref:`label-enable-disable-if` with :ref:`label-min-max-slider` for instance,
+    you don't have to put the ``AllowNesting`` attribute, because you already marked the serialized field with the ``MinMaxSlider`` drawer.
+
 
 ## Drawer Attributes
 Provide special draw options to serialized fields.
@@ -81,7 +79,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/AnimatorParam_Inspector.png)
+![inspector](Documentation/AnimatorParam_Inspector.png)
 
 ### Button
 A method can be marked as a button. A button appears in the inspector and executes the method if clicked.
@@ -98,7 +96,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Button_Inspector.png)
+![inspector](Documentation/Button_Inspector.png)
 
 ### CurveRange
 Set bounds and modify curve color for AnimationCurves
@@ -108,16 +106,16 @@ public class NaughtyComponent : MonoBehaviour
 {
 	[CurveRange(-1, -1, 1, 1)]
 	public AnimationCurve curve;
-	
+
 	[CurveRange(EColor.Orange)]
 	public AnimationCurve curve1;
-	
+
 	[CurveRange(0, 0, 5, 5, EColor.Red)]
 	public AnimationCurve curve2;
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/CurveRange_Inspector.png)
+![inspector](Documentation/CurveRange_Inspector.png)
 
 ### Dropdown
 Provides an interface for dropdown value selection.
@@ -153,7 +151,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Dropdown_Inspector.gif)
+![inspector](Documentation/Dropdown_Inspector.gif)
 
 ### EnumFlags
 Provides dropdown interface for setting enum flags.
@@ -175,7 +173,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/EnumFlags_Inspector.png)
+![inspector](Documentation/EnumFlags_Inspector.png)
 
 ### Expandable
 Make scriptable objects expandable.
@@ -188,7 +186,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Expandable_Inspector.png)
+![inspector](Documentation/Expandable_Inspector.png)
 
 ### HorizontalLine
 
@@ -206,7 +204,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/HorizontalLine_Inspector.png)
+![inspector](Documentation/HorizontalLine_Inspector.png)
 
 ### InfoBox
 Used for providing additional information.
@@ -225,7 +223,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/InfoBox_Inspector.png)
+![inspector](Documentation/InfoBox_Inspector.png)
 
 ### InputAxis
 Select an input axis via dropdown interface.
@@ -238,7 +236,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/InputAxis_Inspector.png)
+![inspector](Documentation/InputAxis_Inspector.png)
 
 ### Layer
 Select a layer via dropdown interface.
@@ -254,7 +252,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Layer_Inspector.png)
+![inspector](Documentation/Layer_Inspector.png)
 
 ### MinMaxSlider
 A double slider. The **min value** is saved to the **X** property, and the **max value** is saved to the **Y** property of a **Vector2** field.
@@ -267,7 +265,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/MinMaxSlider_Inspector.png)
+![inspector](Documentation/MinMaxSlider_Inspector.png)
 
 ### ProgressBar
 ```csharp
@@ -284,7 +282,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ProgressBar_Inspector.png)
+![inspector](Documentation/ProgressBar_Inspector.png)
 
 ### ReorderableList
 Provides array type fields with an interface for easy reordering of elements.
@@ -300,7 +298,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ReorderableList_Inspector.gif)
+![inspector](Documentation/ReorderableList_Inspector.gif)
 
 ### ResizableTextArea
 A resizable text area where you can see the whole text.
@@ -314,7 +312,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ResizableTextArea_Inspector.gif)
+![inspector](Documentation/ResizableTextArea_Inspector.gif)
 
 ### Scene
 Select a scene from the build settings via dropdown interface.
@@ -330,7 +328,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Scene_Inspector.png)
+![inspector](Documentation/Scene_Inspector.png)
 
 ### ShowAssetPreview
 Shows the texture preview of a given asset (Sprite, Prefab...).
@@ -346,7 +344,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ShowAssetPreview_Inspector.png)
+![inspector](Documentation/ShowAssetPreview_Inspector.png)
 
 ### ShowNativeProperty
 Shows native C# properties in the inspector.
@@ -363,7 +361,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ShowNativeProperty_Inspector.png)
+![inspector](Documentation/ShowNativeProperty_Inspector.png)
 
 ### ShowNonSerializedField
 Shows non-serialized fields in the inspector.
@@ -386,7 +384,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ShowNonSerializedField_Inspector.png)
+![inspector](Documentation/ShowNonSerializedField_Inspector.png)
 
 ### SortingLayer
 Select a sorting layer via dropdown interface.
@@ -402,7 +400,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/SortingLayer_Inspector.png)
+![inspector](Documentation/SortingLayer_Inspector.png)
 
 ### Tag
 Select a tag via dropdown interface.
@@ -415,7 +413,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Tag_Inspector.png)
+![inspector](Documentation/Tag_Inspector.png)
 
 ## Meta Attributes
 Give the fields meta data. A field can have more than one meta attributes.
@@ -438,7 +436,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/BoxGroup_Inspector.png)
+![inspector](Documentation/BoxGroup_Inspector.png)
 
 ### Foldout
 Makes a foldout group.
@@ -453,7 +451,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Foldout_Inspector.gif)
+![inspector](Documentation/Foldout_Inspector.gif)
 
 ### EnableIf / DisableIf
 ```csharp
@@ -476,7 +474,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/EnableIf_Inspector.gif)
+![inspector](Documentation/EnableIf_Inspector.gif)
 
 You can have more than one condition.
 
@@ -515,7 +513,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ShowIf_Inspector.gif)
+![inspector](Documentation/ShowIf_Inspector.gif)
 
 You can have more than one condition.
 
@@ -547,7 +545,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Label_Inspector.png)
+![inspector](Documentation/Label_Inspector.png)
 
 ### OnValueChanged
 Detects a value change and executes a callback.
@@ -578,7 +576,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ReadOnly_Inspector.png)
+![inspector](Documentation/ReadOnly_Inspector.png)
 
 ## Validator Attributes
 Used for validating the fields. A field can have infinite number of validator attributes.
@@ -597,7 +595,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/MinValueMaxValue_Inspector.gif)
+![inspector](Documentation/MinValueMaxValue_Inspector.gif)
 
 ### Required
 Used to remind the developer that a given reference type field is required.
@@ -613,7 +611,7 @@ public class NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/Required_Inspector.png)
+![inspector](Documentation/Required_Inspector.png)
 
 ### ValidateInput
 The most powerful ValidatorAttribute.
@@ -639,4 +637,4 @@ public class _NaughtyComponent : MonoBehaviour
 }
 ```
 
-![inspector](https://github.com/dbrizov/NaughtyAttributes/blob/master/Assets/NaughtyAttributes/Documentation~/ValidateInput_Inspector.png)
+![inspector](Documentation/ValidateInput_Inspector.png)
